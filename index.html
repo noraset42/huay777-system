@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WMS GC18 - Member</title>
+    <title>HUAY777 - All in One</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp, onSnapshot, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyA1kBPGS682alisAY_p-h4MaZjFa4L9QcU",
@@ -23,7 +23,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.db = db; 
-        window.fb = { collection, addDoc, getDocs, query, where, serverTimestamp };
+        window.fb = { collection, addDoc, getDocs, query, where, serverTimestamp, onSnapshot, orderBy, doc, updateDoc };
     </script>
 
     <style>
@@ -35,21 +35,21 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen bg-white shadow-2xl flex flex-col">
 
-    <!-- หน้า Login -->
+    <!-- 1. หน้า Login -->
     <div id="login-page" class="page active p-8 pt-20">
         <div class="text-center mb-10">
             <h1 class="text-4xl font-black text-slate-900">HUAY777</h1>
-            <p class="text-slate-400 text-sm">เข้าสู่ระบบเพื่อเริ่มแทงหวย</p>
+            <p class="text-slate-400 text-sm">เข้าสู่ระบบสมาชิก/แอดมิน</p>
         </div>
         <div class="space-y-4">
-            <input type="text" id="login-phone" placeholder="เบอร์โทรศัพท์ (Username)" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:border-yellow-500">
+            <input type="text" id="login-phone" placeholder="เบอร์โทรศัพท์" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:border-yellow-500">
             <input type="password" id="login-pass" placeholder="รหัสผ่าน" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:border-yellow-500">
             <button onclick="handleLogin()" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-bold shadow-lg">เข้าสู่ระบบ</button>
             <button onclick="showPage('reg-page')" class="w-full text-slate-500 text-sm font-bold">ยังไม่มีบัญชี? สมัครสมาชิก</button>
         </div>
     </div>
 
-    <!-- หน้าสมัครสมาชิก -->
+    <!-- 2. หน้าสมัครสมาชิก -->
     <div id="reg-page" class="page p-8">
         <h2 class="text-2xl font-bold mb-6">สมัครสมาชิก</h2>
         <div class="space-y-3">
@@ -69,82 +69,60 @@
         </div>
     </div>
 
-    <!-- หน้าหลักหลัง Login (Home) -->
-    <div id="main-content" class="page flex-col h-full">
+    <!-- 3. หน้าสำหรับ User ปกติ -->
+    <div id="user-page" class="page h-full">
         <header class="bg-slate-900 text-white p-6 rounded-b-[2rem]">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-slate-900" id="user-initial">N</div>
+                    <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-slate-900" id="user-initial">U</div>
                     <div>
-                        <p class="text-[10px] opacity-60">ยินดีต้อนรับ</p>
-                        <h1 class="text-sm font-bold" id="user-display-name">Loading...</h1>
+                        <p class="text-[10px] opacity-60">Member Account</p>
+                        <h1 class="text-sm font-bold" id="user-display-name">...</h1>
                     </div>
                 </div>
                 <button onclick="location.reload()" class="text-slate-400"><i data-lucide="log-out" class="w-5 h-5"></i></button>
             </div>
             <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 p-5 rounded-2xl text-slate-900 shadow-lg">
-                <p class="text-[10px] font-bold opacity-70">ยอดเงินคงเหลือ</p>
+                <p class="text-[10px] font-bold opacity-70 uppercase">Balance</p>
                 <h2 class="text-3xl font-black">0.00 <span class="text-sm">฿</span></h2>
             </div>
         </header>
-
-        <div class="p-6 space-y-6">
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="alert('ระบบหวยรัฐบาลเปิดเร็วๆ นี้')" class="p-6 bg-white border rounded-[2rem] shadow-sm flex flex-col items-center">
-                    <img src="https://flagcdn.com/w80/th.png" class="w-10 h-7 rounded mb-2">
-                    <span class="text-xs font-bold">รัฐบาลไทย</span>
-                </button>
-                <button onclick="showPage('finance-page')" class="p-6 bg-white border rounded-[2rem] shadow-sm flex flex-col items-center">
-                    <i data-lucide="wallet" class="mb-2 text-blue-600"></i>
-                    <span class="text-xs font-bold">ฝาก-ถอน</span>
-                </button>
-            </div>
+        <div class="p-6 text-center text-slate-400">
+            <i data-lucide="info" class="mx-auto mb-2"></i>
+            <p class="text-xs">หน้าแทงหวยจะเปิดรับยอดเร็วๆ นี้</p>
         </div>
     </div>
 
-    <!-- หน้าฝากถอน -->
-    <div id="finance-page" class="page p-6">
-        <button onclick="showPage('main-content')" class="mb-6 flex items-center gap-2 font-bold text-slate-400"><i data-lucide="arrow-left"></i> กลับ</button>
-        <div class="bg-slate-50 p-6 rounded-3xl space-y-4">
-            <select id="trans-type" class="w-full p-4 rounded-xl border">
-                <option value="deposit">ฝากเงิน</option>
-                <option value="withdraw">ถอนเงิน</option>
-            </select>
-            <input type="number" id="trans-amount" placeholder="จำนวนเงิน" class="w-full p-4 rounded-xl border text-2xl font-bold text-center">
-            <button onclick="submitFinance()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold">แจ้งรายการ</button>
+    <!-- 4. หน้าสำหรับ แอดมิน (เข้าได้เฉพาะเบอร์แอดมิน) -->
+    <div id="admin-page" class="page p-6 bg-slate-50">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-xl font-black text-red-600">ADMIN CONTROL</h1>
+            <button onclick="location.reload()" class="text-slate-400"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+        </div>
+        
+        <div class="space-y-6">
+            <div class="bg-white p-4 rounded-2xl shadow-sm">
+                <h2 class="font-bold text-sm mb-3 text-slate-500">คำขอเงิน (Deposit/Withdraw)</h2>
+                <div id="admin-money-list" class="space-y-2"></div>
+            </div>
+            
+            <div class="bg-white p-4 rounded-2xl shadow-sm">
+                <h2 class="font-bold text-sm mb-3 text-slate-500">รายชื่อสมาชิก</h2>
+                <div id="admin-user-list" class="space-y-2 text-xs"></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // *** ตั้งค่าเบอร์แอดมินที่นี่ ***
+        const ADMIN_PHONE = "0800000000";
+        
         let currentUser = null;
         lucide.createIcons();
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'main-content') document.getElementById('main-content').style.display = 'flex';
-        }
-
-        async function handleRegister() {
-            const user = {
-                name: document.getElementById('reg-name').value,
-                phone: document.getElementById('reg-phone').value,
-                bank: document.getElementById('reg-bank').value,
-                acc: document.getElementById('reg-acc').value,
-                pass: document.getElementById('reg-pass').value
-            };
-
-            if(!user.name || !user.phone || !user.pass) return alert('กรุณากรอกข้อมูลสำคัญให้ครบ');
-
-            try {
-                await window.fb.addDoc(window.fb.collection(window.db, "users"), {
-                    ...user,
-                    balance: 0,
-                    timestamp: window.fb.serverTimestamp()
-                });
-                alert('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
-                showPage('login-page');
-            } catch (e) { alert('เกิดข้อผิดพลาด'); }
         }
 
         async function handleLogin() {
@@ -159,28 +137,61 @@
             const snap = await window.fb.getDocs(q);
             if (!snap.empty) {
                 currentUser = snap.docs[0].data();
-                document.getElementById('user-display-name').innerText = currentUser.name;
-                document.getElementById('user-initial').innerText = currentUser.name[0];
-                showPage('main-content');
+                
+                // เช็คว่าเป็นแอดมินหรือไม่
+                if(phone === ADMIN_PHONE) {
+                    showPage('admin-page');
+                    loadAdminData();
+                } else {
+                    document.getElementById('user-display-name').innerText = currentUser.name;
+                    document.getElementById('user-initial').innerText = currentUser.name[0];
+                    showPage('user-page');
+                }
             } else {
                 alert('เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง');
             }
         }
 
-        async function submitFinance() {
-            const amount = document.getElementById('trans-amount').value;
-            if(!amount || amount <= 0) return alert('ระบุยอดเงิน');
-            
-            await window.fb.addDoc(window.fb.collection(window.db, "transactions"), {
-                user: currentUser.name,
-                phone: currentUser.phone,
-                type: document.getElementById('trans-type').value,
-                amount: parseFloat(amount),
-                status: "pending",
-                timestamp: window.fb.serverTimestamp()
+        async function handleRegister() {
+            const user = {
+                name: document.getElementById('reg-name').value,
+                phone: document.getElementById('reg-phone').value,
+                bank: document.getElementById('reg-bank').value,
+                acc: document.getElementById('reg-acc').value,
+                pass: document.getElementById('reg-pass').value
+            };
+            if(!user.phone || !user.pass) return alert('กรุณากรอกข้อมูลให้ครบ');
+            await window.fb.addDoc(window.fb.collection(window.db, "users"), { ...user, timestamp: window.fb.serverTimestamp() });
+            alert('สมัครสมาชิกสำเร็จ!');
+            showPage('login-page');
+        }
+
+        function loadAdminData() {
+            // ดึงข้อมูลรายการเงิน
+            window.fb.onSnapshot(window.fb.query(window.fb.collection(window.db, "transactions"), window.fb.orderBy("timestamp", "desc")), (snap) => {
+                const list = document.getElementById('admin-money-list');
+                list.innerHTML = '';
+                snap.forEach(d => {
+                    const data = d.data();
+                    list.innerHTML += `<div class="p-3 border rounded-xl flex justify-between items-center text-sm">
+                        <span>${data.user} (${data.type}) <b>${data.amount}฿</b></span>
+                        ${data.status === 'pending' ? `<button onclick="approve('${d.id}')" class="bg-green-500 text-white px-2 py-1 rounded text-[10px]">อนุมัติ</button>` : `<span class="text-slate-400 text-[10px]">SUCCESS</span>`}
+                    </div>`;
+                });
             });
-            alert('แจ้งรายการเรียบร้อย รอตรวจสอบ');
-            showPage('main-content');
+            // ดึงรายชื่อสมาชิก
+            window.fb.onSnapshot(window.fb.collection(window.db, "users"), (snap) => {
+                const list = document.getElementById('admin-user-list');
+                list.innerHTML = '';
+                snap.forEach(d => {
+                    const data = d.data();
+                    list.innerHTML += `<div class="p-2 bg-slate-50 rounded-lg border">${data.name} - ${data.phone} (${data.bank})</div>`;
+                });
+            });
+        }
+
+        async function approve(id) {
+            await window.fb.updateDoc(window.fb.doc(window.db, "transactions", id), { status: "success" });
         }
     </script>
 </body>
